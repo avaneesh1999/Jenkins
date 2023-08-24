@@ -1,25 +1,23 @@
-# Simple Notes App
+# Simple Notes App Deployed on AWS EC2
 This is a simple notes app built with React and Django.
 
 ## Requirements
 1. Python 3.9
 2. Node.js
 3. React
+4. Docker
+5. AWS  Linux EC2 instance
+6. Docker Hub 
 
-## Installation
-1. Clone the repository
+## AUTOMATION CI/CD
 ```
-git clone https://github.com/LondheShubham153/django-notes-app.git
-```
+CODE --> clone through github
+ 
+BUILD --> build through docker
 
-2. Build the app
-```
-docker build -t notes-app .
-```
+PUSH --> pushed to docker hub
 
-3. Run the app
-```
-docker run -d -p 8000:8000 notes-app:latest
+DEPLOY --> deployed on 8000 port on AWS EC2
 ```
 
 ## Nginx

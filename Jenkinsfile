@@ -1,34 +1,31 @@
 pipeline {
-    agent any 
+    agent any
     
     stages{
-        stage("Clone Code"){
-            steps {
-                echo "Cloning the code"
-                git url:"https://github.com/LondheShubham153/django-notes-app.git", branch: "main"
+        stage("Code"){
+            steps{
+                git url: "https://github.com/LondheShubham153/django-notes-app.git", branch: "dev"
             }
         }
         stage("Build"){
-            steps {
-                echo "Building the image"
-                sh "docker build -t my-note-app ."
+            steps{
+                sh "docker build . -t node-app-test-new"
             }
         }
-        stage("Push to Docker Hub"){
-            steps {
-                echo "Pushing the image to docker hub"
+        stage("Push to DockerHub"){
+            steps{
                 withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker tag my-note-app ${env.dockerHubUser}/my-note-app:latest"
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                sh "docker push ${env.dockerHubUser}/my-note-app:latest"
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                    sh "docker tag node-app-test-new ${env.dockerHubUser}/node-app-test-new:latest"
+                    sh "docker push ${env.dockerHubUser}/node-app-test-new:latest" 
+                    echo "Login successfull"
                 }
             }
         }
+        
         stage("Deploy"){
-            steps {
-                echo "Deploying the container"
-                sh "docker-compose down && docker-compose up -d"
-                
+            steps{
+                sh "docker run -d -p 8000:8000 ramramji/node-app-test-new:latest"
             }
         }
     }
